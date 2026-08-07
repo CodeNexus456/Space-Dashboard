@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Space Dashboard — Explore the Universe in Real Time</title>
+<meta name="description" content="Live NASA imagery, ISS tracking, rocket launches, and space news in one dashboard." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- Animated starfield background -->
+<canvas id="starfield"></canvas>
+<div class="nebula-glow nebula-1"></div>
+<div class="nebula-glow nebula-2"></div>
+
+<!-- ===== NAVBAR ===== -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="logo"><span class="logo-icon">🚀</span> Space Dashboard</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" class="nav-link active" data-section="home">Home</a>
+      <a href="#apod" class="nav-link" data-section="apod">NASA APOD</a>
+      <a href="#iss" class="nav-link" data-section="iss">ISS Tracker</a>
+      <a href="#launches" class="nav-link" data-section="launches">Launches</a>
+      <a href="#news" class="nav-link" data-section="news">News</a>
+      <a href="#mars" class="nav-link" data-section="mars">Mars</a>
+      <a href="#about" class="nav-link" data-section="about">About</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-content fade-up">
+    <p class="eyebrow"><span class="pulse-dot"></span> LIVE MISSION FEED — ALL SYSTEMS NOMINAL</p>
+    <h1>Explore Space<br><span class="grad-text">in Real Time</span></h1>
+    <p class="hero-sub">Live NASA imagery, ISS tracking, rocket launches, and space news — all in one modern dashboard.</p>
+    <div class="hero-buttons">
+      <a href="#apod" class="btn btn-primary">Explore <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="#iss" class="btn btn-outline">Live Tracker <i class="fa-solid fa-satellite"></i></a>
+    </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="planet"></div>
+    <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
+    <div class="orbit orbit-2"><div class="orbit-dot"></div></div>
+    <i class="fa-solid fa-rocket floating-rocket"></i>
+  </div>
+  <a href="#stats" class="scroll-cue" aria-label="Scroll down"><i class="fa-solid fa-chevron-down"></i></a>
+</section>
+
+<!-- ===== DASHBOARD STATS ===== -->
+<section class="stats-strip" id="stats">
+  <div class="stat-item fade-up">
+    <span class="stat-num" data-target="184320">0</span>
+    <span class="stat-label">NASA Images Viewed</span>
+  </div>
+  <div class="stat-item fade-up">
+    <span class="stat-num" data-target="401">0</span>
+    <span class="stat-label">Rocket Launches</span>
+  </div>
+  <div class="stat-item fade-up">
+    <span class="stat-num" data-target="52840">0</span>
+    <span class="stat-label">ISS Position Updates</span>
+  </div>
+  <div class="stat-item fade-up">
+    <span class="stat-num" data-target="9210">0</span>
+    <span class="stat-label">News Articles</span>
+  </div>
+  <div class="stat-item fade-up">
+    <span class="stat-num" data-target="1284670">0</span>
+    <span class="stat-label">API Requests Served</span>
+  </div>
+</section>
+
+<!-- ===== APOD SECTION ===== -->
+<section class="section" id="apod">
+  <div class="section-head fade-up">
+    <p class="eyebrow">NASA · ASTRONOMY PICTURE OF THE DAY</p>
+    <h2>Today's View of the Cosmos</h2>
+    <p class="section-sub">A new image or photograph of our fascinating universe, curated daily by NASA astronomers.</p>
+  </div>
+
+  <div class="apod-card glass fade-up" id="apodCard">
+    <div class="apod-media" id="apodMedia">
+      <div class="skeleton skeleton-media"></div>
+    </div>
+    <div class="apod-body">
+      <div class="apod-meta" id="apodMeta">
+        <div class="skeleton skeleton-line" style="width:40%"></div>
+        <div class="skeleton skeleton-line" style="width:25%"></div>
+      </div>
+      <h3 id="apodTitle" class="skeleton-text"></h3>
+      <p id="apodExplanation" class="apod-explanation">
+        <span class="skeleton skeleton-line"></span>
+        <span class="skeleton skeleton-line"></span>
+        <span class="skeleton skeleton-line" style="width:70%"></span>
+      </p>
+      <div class="apod-footer">
+        <span id="apodCopyright" class="apod-copyright"></span>
+        <div class="apod-actions">
+          <button class="icon-btn" id="apodRefresh" title="Refresh"><i class="fa-solid fa-rotate"></i></button>
+          <button class="icon-btn" id="apodCopy" title="Copy image URL"><i class="fa-solid fa-link"></i></button>
+          <button class="icon-btn" id="apodDownload" title="Download image"><i class="fa-solid fa-download"></i></button>
+          <button class="icon-btn" id="apodShare" title="Share"><i class="fa-solid fa-share-nodes"></i></button>
+          <a class="btn btn-small btn-primary" id="apodHdLink" href="#" target="_blank" rel="noopener">Open HD Image</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="error-msg" id="apodError" hidden><i class="fa-solid fa-triangle-exclamation"></i> Couldn't load today's picture. <button id="apodRetry">Retry</button></p>
+</section>
+
+<!-- ===== ISS TRACKER ===== -->
+<section class="section section-alt" id="iss">
+  <div class="section-head fade-up">
+    <p class="eyebrow">LIVE TELEMETRY · OPEN NOTIFY / WHERETHEISS.AT</p>
+    <h2>International Space Station Tracker</h2>
+    <p class="section-sub">Real-time orbital position of the ISS, refreshed automatically every 5 seconds.</p>
+  </div>
+
+  <div class="iss-grid fade-up">
+    <div class="iss-map-panel glass">
+      <div class="iss-map" id="issMap">
+        <svg id="issMapGrid" viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="iss-marker" id="issMarker"><i class="fa-solid fa-satellite"></i><span class="iss-marker-pulse"></span></div>
+      </div>
+      <p class="iss-map-caption">Equirectangular projection · marker shows current sub-satellite point</p>
+    </div>
+
+    <div class="iss-data-panel">
+      <div class="iss-stat glass">
+        <span class="iss-stat-label">Latitude</span>
+        <span class="iss-stat-value mono" id="issLat">—</span>
+      </div>
+      <div class="iss-stat glass">
+        <span class="iss-stat-label">Longitude</span>
+        <span class="iss-stat-value mono" id="issLon">—</span>
+      </div>
+      <div class="iss-stat glass">
+        <span class="iss-stat-label">Altitude</span>
+        <span class="iss-stat-value mono" id="issAlt">—</span>
+      </div>
+      <div class="iss-stat glass">
+        <span class="iss-stat-label">Velocity</span>
+        <span class="iss-stat-value mono" id="issVel">—</span>
+      </div>
+      <div class="iss-stat glass">
+        <span class="iss-stat-label">Visibility</span>
+        <span class="iss-stat-value mono" id="issVis">—</span>
+      </div>
+      <div class="iss-stat glass">
+        <span class="iss-stat-label">Timestamp (UTC)</span>
+        <span class="iss-stat-value mono" id="issTime">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="iss-controls fade-up">
+    <button class="btn btn-outline btn-small" id="issLocateMe"><i class="fa-solid fa-location-crosshairs"></i> Locate Me &amp; Compare</button>
+    <span class="iss-updated">Last updated: <span id="issLastUpdated">—</span></span>
+    <span class="live-badge"><span class="pulse-dot"></span> LIVE · refresh 5s</span>
+  </div>
+  <p class="iss-distance" id="issDistance" hidden></p>
+</section>
+
+<!-- ===== LAUNCHES ===== -->
+<section class="section" id="launches">
+  <div class="section-head fade-up">
+    <p class="eyebrow">SPACEX · MISSION SCHEDULE</p>
+    <h2>Upcoming Rocket Launches</h2>
+    <p class="section-sub">Countdown to the next missions leaving Earth.</p>
+  </div>
+  <div class="card-grid" id="launchGrid">
+    <div class="launch-card glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="launch-card glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="launch-card glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+  </div>
+  <p class="error-msg" id="launchError" hidden><i class="fa-solid fa-triangle-exclamation"></i> Couldn't load launch data. <button id="launchRetry">Retry</button></p>
+</section>
+
+<!-- ===== NEWS ===== -->
+<section class="section section-alt" id="news">
+  <div class="section-head fade-up">
+    <p class="eyebrow">SPACEFLIGHT NEWS API</p>
+    <h2>Latest Space News</h2>
+    <p class="section-sub">Stay current with headlines from across the industry.</p>
+  </div>
+
+  <div class="news-controls fade-up">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="newsSearch" placeholder="Search articles…" />
+    </div>
+    <div class="filter-chips" id="newsFilters">
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="nasa">NASA</button>
+      <button class="chip" data-filter="spacex">SpaceX</button>
+      <button class="chip" data-filter="astronomy">Astronomy</button>
+      <button class="chip" data-filter="iss">ISS</button>
+      <button class="chip" data-filter="mars">Mars</button>
+    </div>
+  </div>
+
+  <div class="card-grid" id="newsGrid">
+    <div class="news-card glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="news-card glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="news-card glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+  </div>
+  <p class="empty-msg" id="newsEmpty" hidden>No articles match your search.</p>
+  <p class="error-msg" id="newsError" hidden><i class="fa-solid fa-triangle-exclamation"></i> Couldn't load space news. <button id="newsRetry">Retry</button></p>
+</section>
+
+<!-- ===== MARS ROVER GALLERY ===== -->
+<!-- <section class="section" id="mars">
+  <div class="section-head fade-up">
+    <p class="eyebrow">NASA · MARS ROVER PHOTOS</p>
+    <h2>Mars Rover Gallery</h2>
+    <p class="section-sub">Recent frames beamed back from the surface of the Red Planet.</p>
+  </div>
+  <div class="mars-gallery" id="marsGallery">
+    <div class="mars-photo glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="mars-photo glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="mars-photo glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+    <div class="mars-photo glass skeleton-card"><div class="skeleton skeleton-media"></div></div>
+  </div>
+  <p class="error-msg" id="marsError" hidden><i class="fa-solid fa-triangle-exclamation"></i> Couldn't load Mars rover images. <button id="marsRetry">Retry</button></p>
+</section> -->
+
+<!-- ===== SPACE FACTS ===== -->
+<section class="section section-alt" id="facts">
+  <div class="section-head fade-up">
+    <p class="eyebrow">QUICK REFERENCE</p>
+    <h2>Space Facts</h2>
+  </div>
+  <div class="facts-grid">
+    <div class="fact-card glass fade-up"><i class="fa-solid fa-sun"></i><span class="fact-num" data-target="149.6">0</span><span class="fact-unit">million km</span><span class="fact-label">Earth → Sun distance</span></div>
+    <div class="fact-card glass fade-up"><i class="fa-solid fa-moon"></i><span class="fact-num" data-target="384400">0</span><span class="fact-unit">km</span><span class="fact-label">Earth → Moon distance</span></div>
+    <div class="fact-card glass fade-up"><i class="fa-solid fa-globe"></i><span class="fact-num" data-target="8">0</span><span class="fact-unit">planets</span><span class="fact-label">In our solar system</span></div>
+    <div class="fact-card glass fade-up"><i class="fa-solid fa-gauge-high"></i><span class="fact-num" data-target="27600">0</span><span class="fact-unit">km/h</span><span class="fact-label">ISS orbital speed</span></div>
+    <div class="fact-card glass fade-up"><i class="fa-solid fa-user-astronaut"></i><span class="fact-num" data-target="7">0</span><span class="fact-unit">people</span><span class="fact-label">Currently in space</span></div>
+    <div class="fact-card glass fade-up"><i class="fa-solid fa-rocket"></i><span class="fact-num" data-target="6500">0</span><span class="fact-unit">missions</span><span class="fact-label">Launched since 1957</span></div>
+  </div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section class="section about-section" id="about">
+  <div class="section-head fade-up">
+    <p class="eyebrow">ABOUT</p>
+    <h2>About This Dashboard</h2>
+    <p class="section-sub">
+      Space Dashboard pulls live data from NASA, SpaceX, Open Notify / WhereTheISS.at, and the Spaceflight News API
+      to give you a single, real-time window into what's happening above our heads. Built with plain HTML, CSS, and
+      JavaScript — no frameworks, no build step — as a demonstration of modern front-end craft: responsive layouts,
+      glassmorphism, accessible interactions, and resilient API handling.
+    </p>
+  </div>
+  <div class="about-badges fade-up">
+    <span class="about-badge"><i class="fa-brands fa-html5"></i> HTML5</span>
+    <span class="about-badge"><i class="fa-brands fa-css3-alt"></i> CSS3</span>
+    <span class="about-badge"><i class="fa-brands fa-js"></i> Vanilla JS</span>
+    <span class="about-badge"><i class="fa-solid fa-satellite-dish"></i> Live APIs</span>
+    <span class="about-badge"><i class="fa-solid fa-mobile-screen"></i> Fully Responsive</span>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo"><span class="logo-icon">🚀</span> Space Dashboard</span>
+      <p>Explore the universe in real time.</p>
+    </div>
+    <div class="footer-links">
+      <div>
+        <h4>Dashboard</h4>
+        <a href="#apod">NASA APOD</a>
+        <a href="#iss">ISS Tracker</a>
+        <a href="#launches">Launches</a>
+        <a href="#news">News</a>
+        <a href="#mars">Mars Rovers</a>
+      </div>
+      <div>
+        <h4>Data Sources</h4>
+        <a href="https://api.nasa.gov" target="_blank" rel="noopener">NASA Open APIs</a>
+        <a href="https://github.com/r-spacex/SpaceX-API" target="_blank" rel="noopener">SpaceX API</a>
+        <a href="https://wheretheiss.at/w/developer" target="_blank" rel="noopener">WhereTheISS.at</a>
+        <a href="https://spaceflightnewsapi.net" target="_blank" rel="noopener">Spaceflight News API</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <span id="year"></span> Space Dashboard. Built for exploration. Data via NASA, SpaceX &amp; open space APIs.</p>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+
+<div class="toast" id="toast"></div>
+<div class="offline-banner" id="offlineBanner" hidden><i class="fa-solid fa-wifi"></i> You're offline — showing cached data where available.</div>
+
+<!-- Fullscreen preview -->
+<!-- <div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+  <img id="lightboxImg" src="" alt="" />
+</div> -->
+
+<script src="Js/app.js" defer></script>
+<script src="js/nasa.js" defer></script>
+<script src="js/iss.js" defer></script>
+<script src="js/spacex.js" defer></script>
+<script src="js/news.js" defer></script>
+<script src="js/mars.js" defer></script>
+</body>
+</html>
