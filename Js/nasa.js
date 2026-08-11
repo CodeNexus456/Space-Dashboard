@@ -1,6 +1,6 @@
-/* ==========================================================================
-   nasa.js — NASA Astronomy Picture of the Day
-   ========================================================================== */
+
+  //  nasa.js — NASA Astronomy Picture of the Day
+  
 
 (() => {
   'use strict';
@@ -142,3 +142,5 @@
 
   document.addEventListener('DOMContentLoaded', () => load());
 })();
+
+

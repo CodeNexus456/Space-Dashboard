@@ -1,6 +1,6 @@
-/* ==========================================================================
-   spacex.js — Upcoming SpaceX launches with live countdowns
-   ========================================================================== */
+
+  //  spacex.js — Upcoming SpaceX launches with live countdowns
+
 
 (() => {
   'use strict';

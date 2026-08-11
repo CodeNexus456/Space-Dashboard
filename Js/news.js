@@ -1,6 +1,5 @@
-/* ==========================================================================
-   news.js — Spaceflight News API: articles, search, category filters
-   ========================================================================== */
+
+  //  news.js — Spaceflight News API: articles, search, category filters
 
 (() => {
   'use strict';
